@@ -2,13 +2,21 @@ plugins {
     kotlin("jvm") version "1.4.31"
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "com.martyneju"
+version = "0.0.1-SNAPSHOT"
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.targetCompatibility = JavaVersion.VERSION_1_8
+
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    jcenter()
+    maven {
+        setUrl("https://plugins.gradle.org/m2/")
+    }
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("org.ceylon-lang:com.redhat.ceylon.common:1.3.3")
 }
