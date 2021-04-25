@@ -1,4 +1,5 @@
 plugins {
+    `java-gradle-plugin`
     kotlin("jvm") version "1.4.31"
 }
 
@@ -19,4 +20,12 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("org.ceylon-lang:com.redhat.ceylon.common:1.3.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
+}
+
+tasks {
+    test {
+        useJUnitPlatform()
+        testLogging.showStandardStreams = true
+    }
 }
