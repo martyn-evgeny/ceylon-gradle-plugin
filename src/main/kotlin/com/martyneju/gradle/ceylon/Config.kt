@@ -6,6 +6,7 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import com.redhat.ceylon.common.config.CeylonConfig
 import com.redhat.ceylon.common.config.DefaultToolOptions
+import org.gradle.api.provider.ListProperty
 import java.io.File;
 
 open class Config @Inject constructor(@Suppress("UNUSED_PARAMETER") project: Project,
@@ -15,10 +16,10 @@ open class Config @Inject constructor(@Suppress("UNUSED_PARAMETER") project: Pro
      */
     val config = CeylonConfig.get()
 
-    val sourceRoots: Property<List<File>> = objects.property<List<File>>().convention( DefaultToolOptions.getCompilerSourceDirs() )
-    val resourceRoots: Property<List<File>> = objects.property<List<File>>().convention( DefaultToolOptions.getCompilerResourceDirs())
-    val testResourceRoots: Property<List<File>> = objects.property<List<File>>().convention(DefaultToolOptions.getCompilerResourceDirs())
-    val testRoots: Property<List<File>> = objects.property<List<File>>().convention(DefaultToolOptions.getCompilerSourceDirs())
+    val sourceRoots: ListProperty<File> = objects.lProperty<File>().convention( DefaultToolOptions.getCompilerSourceDirs() )
+    val resourceRoots: ListProperty<File> = objects.lProperty<File>().convention( DefaultToolOptions.getCompilerResourceDirs())
+    val testResourceRoots: ListProperty<File> = objects.lProperty<File>().convention(DefaultToolOptions.getCompilerResourceDirs())
+    val testRoots: ListProperty<File> = objects.lProperty<File>().convention(DefaultToolOptions.getCompilerSourceDirs())
     val output: Property<String> = objects.property<String>().convention(DefaultToolOptions.getCompilerOutputRepo())
     val overrides: Property<String> = objects.property<String>().convention(project.buildDir.resolve("overrides.xml").path)
     val mavenSettings: Property<String> = objects.property<String>().convention(project.buildDir.resolve("maven-settings.xml").path)
@@ -40,3 +41,12 @@ open class Config @Inject constructor(@Suppress("UNUSED_PARAMETER") project: Pro
  */
 internal inline fun <reified T : Any> ObjectFactory.property(): Property<T> =
     property(T::class.javaObjectType)
+
+/**
+ * Creates a [ListProperty] to hold values of the given type.
+ *
+ * @param T the type of the property
+ * @return the list property
+ */
+internal inline fun <reified T : Any> ObjectFactory.lProperty(): ListProperty<T> =
+    listProperty(T::class.javaObjectType)
