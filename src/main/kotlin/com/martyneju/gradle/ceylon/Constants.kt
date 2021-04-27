@@ -13,9 +13,14 @@ const val CEYLON_PLUGIN_EXTENSION_NAME = "ceylonPlugin"
 const val GRADLE_FILES_DIR = ".gradle"
 
 /**
- * Name of directory where ceylon environments will be stored.
+ * Name of directory where ceylon will be stored.
  */
 const val CEYLON_ENVS_DIR = "ceylon"
+
+/**
+ * Name of directory where java 8 will be stored.
+ */
+const val JAVA_ENVS_DIR = "java8"
 
 /**
  * Plugin tasks group name.

@@ -23,14 +23,16 @@ open class Config @Inject constructor(@Suppress("UNUSED_PARAMETER") project: Pro
     val testResourceRoots: ListProperty<File> = objects.lProperty<File>().convention(DefaultToolOptions.getCompilerResourceDirs())
     val testRoots: ListProperty<File> = objects.lProperty<File>().convention(DefaultToolOptions.getCompilerSourceDirs())
     val output: Property<String> = objects.property<String>().convention(DefaultToolOptions.getCompilerOutputRepo())
-    val overrides: Property<String> = objects.property<String>().convention(project.buildDir.resolve("overrides.xml").path)
-    val mavenSettings: Property<String> = objects.property<String>().convention(project.buildDir.resolve("maven-settings.xml").path)
+
+    val overrides: Property<File> = objects.property<File>().convention(project.buildDir.resolve("overrides.xml"))
+    val mavenSettings: Property<File> = objects.property<File>().convention(project.buildDir.resolve("maven-settings.xml"))
+    val fatJarDestination: Property<File> = objects.property<File>().convention(project.buildDir.resolve("fatJar"))
+    val javaRuntimeDestination: Property<File> = objects.property<File>().convention(project.buildDir.resolve("java-runtime"))
+    val testReportDestination: Property<File> = objects.property<File>().convention(project.buildDir.resolve("reports"))
+
     val flatClasspath: Property<Boolean> = objects.property<Boolean>().convention(config.getBoolOption( DefaultToolOptions.DEFAULTS_FLAT_CLASSPATH ) ?: true)
     val importJars: Property<Boolean> = objects.property<Boolean>().convention(false)
     val forceImports: Property<Boolean> = objects.property<Boolean>().convention(false)
     val verbose: Property<Boolean> = objects.property<Boolean>().convention(false)
-    val javaRuntimeDestination: Property<String> = objects.property<String>().convention(project.buildDir.resolve("java-runtime").path)
-    val fatJarDestination: Property<String> = objects.property<String>().convention(project.buildDir.resolve("fatJar").path)
     val generateTestReport: Property<Boolean> = objects.property<Boolean>().convention(true)
-    val testReportDestination: Property<String> = objects.property<String>().convention(project.buildDir.resolve("reports").path)
 }
