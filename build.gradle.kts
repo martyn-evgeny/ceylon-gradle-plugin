@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "1.4.31"
 }
 
-group = "com.martyneju.gradle.ceylon"
+group = "com.martyneju"
 version = "0.0.1"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 java.targetCompatibility = JavaVersion.VERSION_1_8
@@ -41,7 +41,7 @@ publishing {
         create<MavenPublication>("myLibrary") {
             from(components["java"])
             artifact(sourcesJar.get())
-//            artifactId = "ceylon-plugin"
+            artifactId = "ceylon-plugin"
         }
     }
     repositories {

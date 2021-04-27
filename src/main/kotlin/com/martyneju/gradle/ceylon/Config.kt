@@ -1,5 +1,7 @@
 package com.martyneju.gradle.ceylon
 
+import com.martyneju.gradle.ceylon.utils.lProperty
+import com.martyneju.gradle.ceylon.utils.property
 import javax.inject.Inject
 import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
@@ -32,21 +34,3 @@ open class Config @Inject constructor(@Suppress("UNUSED_PARAMETER") project: Pro
     val generateTestReport: Property<Boolean> = objects.property<Boolean>().convention(true)
     val testReportDestination: Property<String> = objects.property<String>().convention(project.buildDir.resolve("reports").path)
 }
-
-/**
- * Creates a [Property] to hold values of the given type.
- *
- * @param T the type of the property
- * @return the property
- */
-internal inline fun <reified T : Any> ObjectFactory.property(): Property<T> =
-    property(T::class.javaObjectType)
-
-/**
- * Creates a [ListProperty] to hold values of the given type.
- *
- * @param T the type of the property
- * @return the list property
- */
-internal inline fun <reified T : Any> ObjectFactory.lProperty(): ListProperty<T> =
-    listProperty(T::class.javaObjectType)
