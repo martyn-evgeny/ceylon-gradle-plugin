@@ -60,9 +60,9 @@ internal val isWindows: Boolean
 internal val os: String
     get() {
         return when {
-            OperatingSystem.current().isMacOsX -> "MacOSX"
-            isWindows -> "Windows"
-            else -> "Linux"
+            OperatingSystem.current().isMacOsX -> "mac"
+            isWindows -> "windows"
+            else -> "linux"
         }
     }
 
@@ -73,12 +73,12 @@ internal val arch: String
     get() {
         val arch = System.getProperty("os.arch")
         return when {
-            OperatingSystem.current().isMacOsX -> "x86_64"
+            OperatingSystem.current().isMacOsX -> "x64"
             isWindows -> when (arch) {
-                "x86_64", "amd64" -> "x86_64"
-                else -> "x86"
+                "x86_64", "amd64" -> "x64"
+                else -> "x86-32"
             }
-            else -> "x86_64"
+            else -> "x64"
         }
     }
 
