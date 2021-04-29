@@ -79,15 +79,8 @@ open class CeylonSetup: DefaultTask() {
 
         ZipFile(name).use { zip ->
             zip.entries().asSequence().forEach { entry ->
-                if (entry.isDirectory)
-                    dir.resolve(entry.name).mkdir()
-                else
-                    Files.copy(zip.getInputStream(entry), dir.resolve(entry.name).toPath())
-//                    zip.getInputStream(entry).use { input ->
-//                        dir.resolve(entry.name).outputStream().use { output ->
-//                            input.copyTo(output)
-//                        }
-//                    }
+                if (entry.isDirectory) dir.resolve(entry.name).mkdir()
+                else Files.copy(zip.getInputStream(entry), dir.resolve(entry.name).toPath())
             }
         }
     }

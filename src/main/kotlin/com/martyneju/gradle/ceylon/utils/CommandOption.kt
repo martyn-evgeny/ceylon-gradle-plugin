@@ -4,7 +4,7 @@ package com.martyneju.gradle.ceylon.utils
  * A simple command option.
  *
  */
-open class CommandOption(val option:String, val argument: String? ) {
+open class CommandOption(val option:String, val argument: String? = null ) {
     /**
      * returns the option without quoting the argument (if there is an argument).
      */

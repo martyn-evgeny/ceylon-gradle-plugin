@@ -1,5 +1,8 @@
 package com.martyneju.gradle.ceylon
 
+import com.martyneju.gradle.ceylon.utils.*
+import com.martyneju.gradle.ceylon.utils.ceylonDir
+import com.martyneju.gradle.ceylon.utils.isWindows
 import com.martyneju.gradle.ceylon.utils.lProperty
 import com.martyneju.gradle.ceylon.utils.property
 import javax.inject.Inject
@@ -24,6 +27,8 @@ open class Config @Inject constructor(@Suppress("UNUSED_PARAMETER") project: Pro
     val testRoots: ListProperty<File> = objects.lProperty<File>().convention(DefaultToolOptions.getCompilerSourceDirs())
     val output: Property<String> = objects.property<String>().convention(DefaultToolOptions.getCompilerOutputRepo())
 
+    val ceylonLocation: Property<File> = objects.property<File>().convention(project.ceylonDir.resolve("ceylon-1.3.3").resolve("bin").resolve("ceylon${ if(isWindows) ".bat" else ""}"))
+    val javaLocation: Property<File> = objects.property<File>().convention(project.javaDir.resolve("jdk8u292-b10"))
     val overrides: Property<File> = objects.property<File>().convention(project.buildDir.resolve("overrides.xml"))
     val mavenSettings: Property<File> = objects.property<File>().convention(project.buildDir.resolve("maven-settings.xml"))
     val fatJarDestination: Property<File> = objects.property<File>().convention(project.buildDir.resolve("fatJar"))
