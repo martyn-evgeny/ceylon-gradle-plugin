@@ -21,7 +21,6 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("org.ceylon-lang:com.redhat.ceylon.common:1.3.3")
-    implementation("org.apache.commons:commons-compress:1.20")
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
 }
 
