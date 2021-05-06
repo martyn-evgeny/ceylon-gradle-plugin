@@ -1,6 +1,6 @@
 package com.martyneju.gradle.ceylon.utils
 
-import java.io.File
+import org.gradle.api.artifacts.ResolvedDependency
 import java.lang.Exception
 import java.lang.RuntimeException
 
@@ -50,12 +50,33 @@ class ModuleImportsState(
 
 class DoneState : State()
 
-open class CeylonModule() {
+class CeylonModule() {
     var moduleName = ""
     var version = ""
     var hasDocs = false
-    val imports: MutableList<MutableMap<String, String>> = mutableListOf()
+    val imports: MutableList<CeylonImport> = mutableListOf()
     var shared = false
+}
+
+class CeylonImport() {
+    var shared: Boolean? = null
+    var namespace: String? = null
+    var name: String? = null
+    var version: String? = null
+    var resolvedDependency: ResolvedDependency? = null
+
+    fun modify(another: CeylonImport) {
+        if(another.namespace != null) this.namespace = another.namespace
+        if(another.name != null) this.name = another.name
+        if(another.version != null) this.version = another.version
+        if(another.shared != null) this.shared = another.shared
+    }
+
+    override fun toString(): String =
+        (if(shared != null) "shared=${shared} " else "") +
+        (if(namespace!=null) "namespace=${namespace} " else "") +
+        (if(name != null) "name=${name} " else "") +
+        (if(version != null) "version=${version}" else "")
 }
 
 typealias map = CeylonModule
@@ -226,14 +247,15 @@ open class CeylonModuleParser(val fileName: String) {
                 }
                 val imports = result.imports
 
-                val importEntry = mutableMapOf("name" to name)
-                if( namespace != null ) importEntry["namespace"] = namespace
+                val ceylonImport = CeylonImport()
+                ceylonImport.name = name
+                if( namespace != null )  ceylonImport.namespace = namespace
 
-                if(imports.isNotEmpty() && imports.last()["name"]==null) { // newest entry has no name yet
-                    assert(imports.last().containsKey("shared"))
-                    imports.last().putAll(importEntry)
+                if(imports.isNotEmpty() && imports.last().name==null) { // newest entry has no name yet
+                    assert(imports.last().shared != null)
+                    imports.last().modify(ceylonImport)
                 } else {
-                    imports.add(importEntry)
+                    imports.add(ceylonImport)
                 }
                 this.state = ModuleImportsState(parsingVersion = true)
             } else {
@@ -242,9 +264,8 @@ open class CeylonModuleParser(val fileName: String) {
         } else if (state.parsingVersion) {
             val macherRes = versionRegex.find(word)
             if (macherRes != null) {
-                val imports = result.imports
                 val lastIndex = macherRes.range.last
-                imports.last()["version"] = word.substring(1,lastIndex)
+                result.imports.last().version = word.substring(1,lastIndex)
                 this.state = ModuleImportsState(parsingSemiColon = true)
                 consumeChars(lastIndex, word, result)
             } else {
@@ -305,12 +326,14 @@ open class CeylonModuleParser(val fileName: String) {
                 val matcherRes = annotationNameRegex.find(word)
                 if (matcherRes != null ) {
                     val lastIndex = matcherRes.range.last
-                    val annotation = word.substring(0, lastIndex)
+                    val annotation = word.substring(0, lastIndex+1)
                     if (annotation == "shared") {
                         if(state is ModuleDeclarationState) {
                             result.shared = true
                         } else {
-                            result.imports.add(mutableMapOf("shared" to "true"))
+                            val ceylonImport = CeylonImport()
+                            ceylonImport.shared = true
+                            result.imports.add(ceylonImport)
                         }
                     }
                     state.parsingAnnotationState = AnnotationState(parsingOpenBracket = true)

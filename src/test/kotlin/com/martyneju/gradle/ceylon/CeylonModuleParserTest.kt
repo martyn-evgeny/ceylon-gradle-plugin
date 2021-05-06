@@ -29,7 +29,7 @@ class CeylonModuleParserTest {
 
         assertEquals(result.moduleName, "my.test.module")
         assertEquals(result.version, "3.3.0")
-        assertEquals(result.imports.toString(),"[{name=other.module, version=3.1.0}]")
+        assertEquals(result.imports.toString(),"[name=other.module version=3.1.0]")
     }
 
     @Test
@@ -57,7 +57,7 @@ class CeylonModuleParserTest {
 
         assertEquals(result.moduleName,"my.test.module")
         assertEquals(result.version, "0")
-        assertEquals(result.imports.toString(), "[{name=other.module, version=1.0}]")
+        assertEquals(result.imports.toString(), "[name=other.module version=1.0]")
     }
 
     @Test
@@ -85,7 +85,7 @@ class CeylonModuleParserTest {
 
         assertEquals(result.moduleName, "my.test.module")
         assertEquals(result.version, "0")
-        assertEquals(result.imports.toString(), "[{name=other.module, version=1.0}]")
+        assertEquals(result.imports.toString(), "[name=other.module version=1.0]")
     }
 
     @Test
@@ -99,7 +99,7 @@ class CeylonModuleParserTest {
 
         assertEquals(result.moduleName, "com.hello.world")
         assertEquals(result.version, "1.0.0")
-        assertEquals(result.imports.toString(), "[{name=java.lang.base, version=7}]")
+        assertEquals(result.imports.toString(), "[name=java.lang.base version=7]")
     }
 
     @Test
@@ -127,7 +127,7 @@ class CeylonModuleParserTest {
 
         assertEquals(result.moduleName,"com.hello.world")
         assertEquals(result.version, "5.3")
-        assertEquals(result.imports.toString(), "[{name=java.lang.base, version=7}, {name=ceylon.collection, version=1.3.3}, {name=one.more.ceylon.module, version=4.3}]")
+        assertEquals(result.imports.toString(), "[name=java.lang.base version=7, name=ceylon.collection version=1.3.3, name=one.more.ceylon.module version=4.3]")
     }
 
     @Test
@@ -146,9 +146,9 @@ class CeylonModuleParserTest {
          }
         """)
 
-        println(result.moduleName)
-        println(result.version)
-        println(result.imports.toString())
+        assertEquals(result.moduleName,"com.hello.world")
+        assertEquals(result.version, "1.0.0")
+        assertEquals(result.imports.toString(),"[name=java.lang.base version=7]")
     }
 
     @Test
@@ -158,14 +158,13 @@ class CeylonModuleParserTest {
             shared import maven:org.eclipse.paho:"org.eclipse.paho.client.mqttv3" "1.3.3";
             import maven:"my-group:other-module" "1.3.3";
             import ceylon.collection "1.3.3";
-            import "org.junit:junit"  "4.12";
-            shared import my_repo:org.liquibase.core "3.4.2";
+            import "org.junit:junit"  "4.12";        
         } 
         """)
 
         assertEquals(result.moduleName, "com.hello.world")
         assertEquals(result.version, "1.3.3")
-        assertEquals(result.imports.toString(), "[{name=org.eclipse.paho:org.eclipse.paho.client.mqttv3, namespace=maven, version=1.3.3}, {name=my-group:other-module, namespace=maven, version=1.3.3}, {name=ceylon.collection, version=1.3.3}, {name=org.junit:junit, namespace=maven, version=4.12}, {name=org.liquibase.core, namespace=my_repo, version=3.4.2}]")
+        assertEquals(result.imports.toString(), "[shared=true namespace=maven name=org.eclipse.paho:org.eclipse.paho.client.mqttv3 version=1.3.3, namespace=maven name=my-group:other-module version=1.3.3, name=ceylon.collection version=1.3.3, namespace=maven name=org.junit:junit version=4.12]")
     }
 
     @Test
@@ -184,7 +183,7 @@ class CeylonModuleParserTest {
 
         assertEquals(result.moduleName, "com.hello.world")
         assertEquals(result.version, "1.0.0")
-        assertEquals(result.imports.toString(),"[{name=java.lang.base, version=7}, {name=org.jquery, version=2.5}, {name=ceylon.promise, version=1.2}]")
+        assertEquals(result.imports.toString(),"[shared=true name=java.lang.base version=7, shared=true name=org.jquery version=2.5, name=ceylon.promise version=1.2]")
     }
 
     @Test
@@ -200,7 +199,7 @@ class CeylonModuleParserTest {
 
         assertEquals(result.moduleName, "org.hibernate")
         assertEquals(result.version, "3.0.0.beta")
-        assertEquals(result.imports.toString(), "[{name=ceylon.language, version=1.0.1}, {name=javax.sql, version=4.0}]")
+        assertEquals(result.imports.toString(), "[shared=true name=ceylon.language version=1.0.1, name=javax.sql version=4.0]")
     }
 
     @Test
@@ -224,7 +223,7 @@ class CeylonModuleParserTest {
 
         assertEquals(result.moduleName, "com.hello.world")
         assertEquals(result.version,"1.0.0")
-        assertEquals(result.imports.toString(),"[{name=java.lang.base, version=7}]")
+        assertEquals(result.imports.toString(),"[name=java.lang.base version=7]")
     }
 
     @Test
@@ -241,7 +240,7 @@ class CeylonModuleParserTest {
 
         assertEquals(result.moduleName,"ru.bia.maven")
         assertEquals(result.version, "1.0.0")
-        assertEquals(result.imports.toString(),"[{name=java.base, version=8}, {name=org.apache.logging.log4j:log4j-core, namespace=maven, version=2.4.1}, {name=org.spockframework:spock-core, namespace=maven, version=1.0-groovy-2.4}]")
+        assertEquals(result.imports.toString(),"[name=java.base version=8, shared=true namespace=maven name=org.apache.logging.log4j:log4j-core version=2.4.1, namespace=maven name=org.spockframework:spock-core version=1.0-groovy-2.4]")
     }
 
     @Test
@@ -265,6 +264,6 @@ class CeylonModuleParserTest {
 
         assertEquals(result.moduleName, "flight")
         assertEquals(result.version, "1.0.0")
-        assertEquals(result.imports.toString(),"[{name=ceylon.interop.java, version=1.2.3}, {name=org.springframework.boot:spring-boot-starter-web, namespace=maven, version=1.3.3.RELEASE}, {name=org.springframework.boot:spring-boot-starter-undertow, namespace=maven, version=1.3.3.RELEASE}, {name=org.springframework.cloud:spring-cloud-starter-eureka, namespace=maven, version=1.1.0.RC1}, {name=org.springframework.boot:spring-boot-starter-data-jpa, namespace=maven, version=1.3.3.RELEASE}, {name=postgresql:postgresql, namespace=maven, version=9.1-901-1.jdbc4}, {name=org.liquibase.core, namespace=my_repo, version=3.4.2}, {name=junit:junit, namespace=maven, version=4.12}]")
+        assertEquals(result.imports.toString(),"[name=ceylon.interop.java version=1.2.3, namespace=maven name=org.springframework.boot:spring-boot-starter-web version=1.3.3.RELEASE, namespace=maven name=org.springframework.boot:spring-boot-starter-undertow version=1.3.3.RELEASE, namespace=maven name=org.springframework.cloud:spring-cloud-starter-eureka version=1.1.0.RC1, shared=true namespace=maven name=org.springframework.boot:spring-boot-starter-data-jpa version=1.3.3.RELEASE, namespace=maven name=postgresql:postgresql version=9.1-901-1.jdbc4, shared=true namespace=my_repo name=org.liquibase.core version=3.4.2, namespace=maven name=junit:junit version=4.12]")
     }
 }
