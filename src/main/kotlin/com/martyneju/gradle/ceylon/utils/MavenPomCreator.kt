@@ -3,7 +3,6 @@ package com.martyneju.gradle.ceylon.utils
 import org.gradle.api.artifacts.ResolvedDependency
 import org.gradle.api.logging.Logging
 import java.io.FileOutputStream
-import java.io.FileWriter
 import java.io.IOException
 import javax.xml.stream.XMLOutputFactory
 import javax.xml.stream.XMLStreamException

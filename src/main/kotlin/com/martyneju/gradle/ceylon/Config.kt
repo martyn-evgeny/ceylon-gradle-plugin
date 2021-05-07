@@ -31,6 +31,7 @@ open class Config @Inject constructor(@Suppress("UNUSED_PARAMETER") project: Pro
     val javaLocation: Property<File> = objects.property<File>().convention(project.javaDir.resolve("jdk8u292-b10"))
     val overrides: Property<File> = objects.property<File>().convention(project.buildDir.resolve("overrides.xml"))
     val mavenSettings: Property<File> = objects.property<File>().convention(project.buildDir.resolve("maven-settings.xml"))
+    val mavenRepo: Property<File> = objects.property<File>().convention(project.buildDir.resolve("maven-repository"))
     val fatJarDestination: Property<File> = objects.property<File>().convention(project.buildDir.resolve("fatJar"))
     val javaRuntimeDestination: Property<File> = objects.property<File>().convention(project.buildDir.resolve("java-runtime"))
     val testReportDestination: Property<File> = objects.property<File>().convention(project.buildDir.resolve("reports"))
