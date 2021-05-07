@@ -7,17 +7,16 @@ import org.gradle.api.artifacts.ResolvedDependency
 /**
  * Tree of dependencies. The root of the tree will contain all project dependencies.
  */
-class DependencyTree(project: Project, moduleDeclaration: CeylonModule ) {
+class DependencyTree(val project: Project, moduleDeclaration: CeylonModule ) {
     val moduleName = moduleDeclaration.moduleName
     val moduleVersion =  moduleDeclaration.version
     val imports = moduleDeclaration.imports.filter { it.namespace == "maven" }
-    val jarDependencies = accumulateDependenciesOf( project )
-    val ceylonDependencies = directCeylonDependenciesOf( project )
+    val jarDependencies = accumulateDependenciesOf()
+    val ceylonDependencies = directCeylonDependenciesOf()
 
-
-    private fun accumulateDependenciesOf(project: Project): Collection<ResolvedDependency> {
+    private fun accumulateDependenciesOf(): Collection<ResolvedDependency> {
         val depsById = mutableMapOf<String, ResolvedDependency>()
-        directJarDependenciesOf(project).forEach { accumulateDependencies( it, depsById) }
+        directJarDependenciesOf().forEach { accumulateDependencies( it, depsById) }
         imports.forEach {
             val id = "${it.name}:${it.version}"
             if (depsById.containsKey( id )) {
@@ -49,9 +48,9 @@ class DependencyTree(project: Project, moduleDeclaration: CeylonModule ) {
             it.version == dependency.moduleVersion
         }
 
-    fun directJarDependenciesOf(project: Project):Collection<ResolvedDependency> = onlyJars(directDependenciesOf(project))
+    fun directJarDependenciesOf():Collection<ResolvedDependency> = onlyJars(directDependenciesOf())
 
-    fun directCeylonDependenciesOf(project: Project): Collection<Project> =
+    fun directCeylonDependenciesOf(): Collection<Project> =
         project
             .configurations
             .findByName("ceylonRuntime")
@@ -59,7 +58,7 @@ class DependencyTree(project: Project, moduleDeclaration: CeylonModule ) {
             ?.withType( ProjectDependency::class.java)
             ?.map { it.dependencyProject} ?: listOf()
 
-    fun directDependenciesOf(project: Project): Collection<ResolvedDependency> =
+    fun directDependenciesOf(): Collection<ResolvedDependency> =
         project
             .configurations
             .findByName("ceylonRuntime")
