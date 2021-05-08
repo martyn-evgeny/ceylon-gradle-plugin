@@ -1,5 +1,6 @@
-package com.martyneju.gradle.ceylon.utils
+package com.martyneju.gradle.ceylon.utils.dependency
 
+import com.martyneju.gradle.ceylon.utils.dependency.CeylonModule
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.artifacts.ResolvedDependency
@@ -7,7 +8,7 @@ import org.gradle.api.artifacts.ResolvedDependency
 /**
  * Tree of dependencies. The root of the tree will contain all project dependencies.
  */
-class DependencyTree(val project: Project, moduleDeclaration: CeylonModule ) {
+class DependencyTree(val project: Project, moduleDeclaration: CeylonModule) {
     val moduleName = moduleDeclaration.moduleName
     val moduleVersion =  moduleDeclaration.version
     val imports = moduleDeclaration.imports.filter { it.namespace == "maven" }

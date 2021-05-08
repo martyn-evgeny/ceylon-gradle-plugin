@@ -1,4 +1,4 @@
-package com.martyneju.gradle.ceylon.utils
+package com.martyneju.gradle.ceylon.utils.dependency
 
 import org.gradle.api.artifacts.ResolvedDependency
 import java.lang.Exception
