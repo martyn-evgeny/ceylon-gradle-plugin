@@ -21,10 +21,10 @@ open class Config @Inject constructor(@Suppress("UNUSED_PARAMETER") project: Pro
      */
     val config = CeylonConfig.get()
 
-    val sourceRoots: ListProperty<File> = objects.lProperty<File>().convention( DefaultToolOptions.getCompilerSourceDirs() )
-    val resourceRoots: ListProperty<File> = objects.lProperty<File>().convention( DefaultToolOptions.getCompilerResourceDirs())
-    val testResourceRoots: ListProperty<File> = objects.lProperty<File>().convention(DefaultToolOptions.getCompilerResourceDirs())
-    val testRoots: ListProperty<File> = objects.lProperty<File>().convention(DefaultToolOptions.getCompilerSourceDirs())
+    val sourceRoots: ListProperty<String> = objects.lProperty<String>().convention( DefaultToolOptions.getCompilerSourceDirs().map { it.path } )
+    val resourceRoots: ListProperty<String> = objects.lProperty<String>().convention( DefaultToolOptions.getCompilerResourceDirs().map { it.path })
+    val testResourceRoots: ListProperty<String> = objects.lProperty<String>().convention(DefaultToolOptions.getCompilerResourceDirs().map { it.path })
+    val testRoots: ListProperty<String> = objects.lProperty<String>().convention(DefaultToolOptions.getCompilerSourceDirs().map { it.path })
     val output: Property<String> = objects.property<String>().convention(DefaultToolOptions.getCompilerOutputRepo())
 
     val ceylonLocation: Property<File> = objects.property<File>().convention(project.ceylonDir.resolve("ceylon-1.3.3").resolve("bin").resolve("ceylon${ if(isWindows) ".bat" else ""}"))
