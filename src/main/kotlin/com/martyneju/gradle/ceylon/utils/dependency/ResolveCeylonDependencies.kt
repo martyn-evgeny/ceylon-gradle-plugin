@@ -8,19 +8,22 @@ import java.io.File
 import com.redhat.ceylon.common.Backend
 import com.redhat.ceylon.common.config.DefaultToolOptions
 
-class ResolveCeylonDependencies(val project: Project, var moduleName: String?) {
-    var module = moduleName
+class ResolveCeylonDependencies(val project: Project, moduleName: String?) {
+
+    val module: String? = moduleName ?: DefaultToolOptions.getCompilerModules( Backend.Header ).joinToString { "," }
     val log = Logging.getLogger( ResolveCeylonDependencies::class.java)
+    val moduleFile = moduleFile()
+
+    fun getModuleName() = module ?: ""
 
     fun resolve(): DependencyTree {
-        val module = moduleFile()
-        if(!module.isFile)
+        if(!moduleFile.isFile)
             throw GradleException("""
             Ceylon module file does not exist.
             Please make sure that you set "sourceRoot" and "module"
             correctly in the "ceylon" configuration."""".trimIndent())
 
-        val moduleDeclaration = CeylonModuleParser(moduleName!!).parse(module.readText())
+        val moduleDeclaration = CeylonModuleParser(module!!).parse(moduleFile.readText())
         val mavenDependencies = moduleDeclaration.imports.filter { it.namespace == "maven" }
 
         val existingDependencies = project
@@ -48,11 +51,8 @@ class ResolveCeylonDependencies(val project: Project, var moduleName: String?) {
         return dependencyTree
     }
 
-    private fun moduleFile(): File {
-        if( module == null) module = DefaultToolOptions.getCompilerModules( Backend.Header ).joinToString { "," }
+    fun moduleFile(): File {
         if( module == null) {
-           module = DefaultToolOptions.getCompilerModules( Backend.Header ).joinToString { "," }
-
            log.error("""
             | The Ceylon module name has not been specified.
             | To specify the name of your Ceylon module, using parameter "module"

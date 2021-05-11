@@ -7,7 +7,7 @@ import com.martyneju.gradle.ceylon.utils.os
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
-open class CeylonSetup: DefaultTask() {
+open class Setup: DefaultTask() {
 
     init {
         group = "ceylon"

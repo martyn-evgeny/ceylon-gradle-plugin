@@ -10,6 +10,7 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.internal.os.OperatingSystem
 import java.io.File
+import javax.xml.stream.XMLStreamWriter
 
 
 /**
@@ -93,3 +94,27 @@ internal val exec: String
             else -> "sh"
         }
     }
+
+/* =================== xml ==================== */
+
+fun XMLStreamWriter.document(init: XMLStreamWriter.() -> Unit): XMLStreamWriter {
+    this.writeStartDocument("UTF-8", "1.0")
+    this.init()
+    this.writeEndDocument()
+    return this
+}
+
+fun XMLStreamWriter.element(name: String, init: XMLStreamWriter.() -> Unit): XMLStreamWriter {
+    this.writeStartElement(name)
+    this.init()
+    this.writeEndElement()
+    return this
+}
+
+fun XMLStreamWriter.element(name: String, content: String) {
+    element(name) {
+        writeCharacters(content)
+    }
+}
+
+fun XMLStreamWriter.attribute(name: String, value: String) = writeAttribute(name, value)

@@ -7,7 +7,7 @@ import java.io.IOException
 open class CeylonToolLocator {
     companion object {
         fun findCeylon(project: Project): String {
-            val ceylon = project.ceylonPlugin.ceylonLocation.get().absolutePath
+            val ceylon = project.file(project.ceylonPlugin.ceylonLocation.get()).absolutePath
             try {
                 Runtime.getRuntime().exec(ceylon).waitFor()
                 return ceylon

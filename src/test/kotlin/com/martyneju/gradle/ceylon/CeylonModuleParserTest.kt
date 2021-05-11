@@ -1,6 +1,6 @@
 package com.martyneju.gradle.ceylon
 
-import com.martyneju.gradle.ceylon.utils.CeylonModuleParser
+import com.martyneju.gradle.ceylon.utils.dependency.CeylonModuleParser
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue

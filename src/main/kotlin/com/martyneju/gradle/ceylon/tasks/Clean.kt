@@ -22,7 +22,7 @@ open class Clean: Delete() {
         val files = mutableListOf<Object>()
         files.add(project.buildDir!! as Object)
         files.add(MavenSettingsFileCreator.mavenSettingsFile(project) as Object)
-        addFilesFromTask(CeylonSetup::class.java, files)
+        addFilesFromTask(GenerateOverridesFile::class.java, files)
 
         return files
     }

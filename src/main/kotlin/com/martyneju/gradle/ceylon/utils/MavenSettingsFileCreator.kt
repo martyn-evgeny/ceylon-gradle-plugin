@@ -10,7 +10,7 @@ class MavenSettingsFileCreator {
         val log = Logging.getLogger( MavenSettingsFileCreator::class.java )
 
         fun mavenSettingsFile(project: Project): File =
-            project.ceylonPlugin.mavenSettings.get()
+            project.file(project.ceylonPlugin.mavenSettings.get())
 
         fun createMavenSettingsFile(project: Project): File {
             val settingsFile = mavenSettingsFile(project)
@@ -28,7 +28,7 @@ class MavenSettingsFileCreator {
             |    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             |    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
             |                        http://maven.apache.org/xsd/settings-1.0.0.xsd">
-            |    <localRepository>${project.ceylonPlugin.mavenRepo.get().absolutePath}</localRepository>
+            |    <localRepository>${project.file(project.ceylonPlugin.mavenRepo.get()).absolutePath}</localRepository>
             |    <offline>true</offline>
             |</settings>
             |""".trimMargin())

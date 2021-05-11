@@ -8,7 +8,7 @@ import org.gradle.api.artifacts.ResolvedDependency
 /**
  * Tree of dependencies. The root of the tree will contain all project dependencies.
  */
-class DependencyTree(val project: Project, moduleDeclaration: CeylonModule) {
+class DependencyTree(val project: Project,val moduleDeclaration: CeylonModule) {
     companion object {
 
         private fun accumulateDependencies(dependency: ResolvedDependency, acc: MutableMap<String, ResolvedDependency> ) {
@@ -68,9 +68,9 @@ class DependencyTree(val project: Project, moduleDeclaration: CeylonModule) {
         onlyJars( imports.map { it.resolvedDependency }.filterNotNull())
     
     fun isShared( dependency: ResolvedDependency ) =
-        moduleDeclaration( dependency )?.shared ?: false
+        findModuleDeclaration( dependency )?.shared ?: false
     
-    private fun moduleDeclaration( dependency: ResolvedDependency ) =
+    private fun findModuleDeclaration( dependency: ResolvedDependency ) =
         imports.find {
             it.name == "${dependency.moduleGroup}:${dependency.moduleName}" &&
             it.version == dependency.moduleVersion
