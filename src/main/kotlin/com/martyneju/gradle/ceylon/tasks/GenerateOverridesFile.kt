@@ -1,5 +1,6 @@
 package com.martyneju.gradle.ceylon.tasks
 
+import com.martyneju.gradle.ceylon.PLUGIN_TASKS_GROUP_NAME
 import com.martyneju.gradle.ceylon.utils.*
 import com.martyneju.gradle.ceylon.utils.ceylonPlugin
 import com.martyneju.gradle.ceylon.utils.dependency.DependencyTree
@@ -17,9 +18,9 @@ import java.io.IOException
 import javax.xml.stream.XMLOutputFactory
 import javax.xml.stream.XMLStreamException
 
-class GenerateOverridesFile: DefaultTask() {
+open class GenerateOverridesFile: DefaultTask() {
     init {
-        group = "ceylon"
+        group = PLUGIN_TASKS_GROUP_NAME
         description = """
             | Generates the overrides.xml file based on the Gradle project dependencies.
             | All Java legacy dependencies declared in the Ceylon module file are checked so
@@ -32,15 +33,15 @@ class GenerateOverridesFile: DefaultTask() {
     /**
      *   name of the Ceylon module
      *   mandatory if no Ceylon config file exists
+     *   and no add properties with exec task
      */
     @Input
-    var module: String? = null
+    var ceylonModule: String = if(project.hasProperty("ceylonModule")) project.property("ceylonModule").toString() else ""
 
-    private val resolve = ResolveCeylonDependencies(project, module)
 
     @InputFiles
     fun inputFiles() =
-        project.allprojects.map { it.buildFile } + resolve.moduleFile
+        project.allprojects.map { it.buildFile } + ResolveCeylonDependencies(project, ceylonModule).moduleFile
 
     private val overrides = project.file(project.ceylonPlugin.overrides.get())
 
@@ -57,7 +58,7 @@ class GenerateOverridesFile: DefaultTask() {
 
         log.info("Generating Ceylon overrides.xml file at ${overrides.absolutePath}")
 
-        val dependencyTree = resolve.resolve()
+        val dependencyTree = ResolveCeylonDependencies(project, ceylonModule).resolve()
         writeOverridesFile(dependencyTree)
     }
 

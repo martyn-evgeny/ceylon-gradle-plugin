@@ -3,7 +3,6 @@ package com.martyneju.gradle.ceylon.utils
 import com.martyneju.gradle.ceylon.CEYLON_ENVS_DIR
 import com.martyneju.gradle.ceylon.Config
 import com.martyneju.gradle.ceylon.GRADLE_FILES_DIR
-import com.martyneju.gradle.ceylon.JAVA_ENVS_DIR
 import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
@@ -42,8 +41,6 @@ internal val Project.ceylonPlugin: Config
 internal val Project.ceylonDir: File
     get() = this.rootDir.resolve(GRADLE_FILES_DIR).resolve(CEYLON_ENVS_DIR)
 
-internal val Project.javaDir: File
-    get() = this.ceylonDir.resolve(JAVA_ENVS_DIR)
 
 /* =================== OS ============== */
 

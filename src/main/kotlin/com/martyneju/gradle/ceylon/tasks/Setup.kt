@@ -1,5 +1,6 @@
 package com.martyneju.gradle.ceylon.tasks
 
+import com.martyneju.gradle.ceylon.PLUGIN_TASKS_GROUP_NAME
 import com.martyneju.gradle.ceylon.utils.arch
 import com.martyneju.gradle.ceylon.utils.ceylonDir
 import com.martyneju.gradle.ceylon.utils.isWindows
@@ -10,7 +11,7 @@ import org.gradle.api.tasks.TaskAction
 open class Setup: DefaultTask() {
 
     init {
-        group = "ceylon"
+        group = PLUGIN_TASKS_GROUP_NAME
         description = "Setup ceylon 1.3.3 and AdoptOpenJDK (jdk8u292-b10)"
         onlyIf {
             !project.ceylonDir.exists()

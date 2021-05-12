@@ -18,11 +18,6 @@ const val GRADLE_FILES_DIR = ".gradle"
 const val CEYLON_ENVS_DIR = "ceylon"
 
 /**
- * Name of directory where java 8 will be stored.
- */
-const val JAVA_ENVS_DIR = "java8"
-
-/**
  * Plugin tasks group name.
  */
 const val PLUGIN_TASKS_GROUP_NAME = "ceylon"

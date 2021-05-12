@@ -1,13 +1,11 @@
 package com.martyneju.gradle.ceylon.utils
 
-import org.gradle.api.GradleException
 import org.gradle.api.Project
-import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import org.gradle.process.ExecResult
+import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
-import java.io.PrintStream
 
 open class CeylonRunner {
     companion object {
@@ -30,9 +28,9 @@ open class CeylonRunner {
 
 
             val env = mapOf<String,String> (
-                "JAVA_HOME" to project.ceylonPlugin.javaLocation.get().absolutePath,
-                "JRE_HOME" to project.ceylonPlugin.javaLocation.get().resolve("jre").absolutePath,
-                "PATH" to project.ceylonPlugin.javaLocation.get().resolve("bin").absolutePath
+                "JAVA_HOME" to project.file(project.ceylonPlugin.javaLocation.get()).absolutePath,
+                "JRE_HOME" to project.file(project.ceylonPlugin.javaLocation.get()).resolve("jre").absolutePath,
+                "PATH" to project.file(project.ceylonPlugin.javaLocation.get()).resolve("bin").absolutePath
             )
             val command = listOf(ceylon, ceylonDirective) +
                 options.map { it.toString() } +
@@ -49,7 +47,6 @@ open class CeylonRunner {
                 it.standardInput = standardInput
                 it.standardOutput = standardOutput
             }
-
         }
 
     }

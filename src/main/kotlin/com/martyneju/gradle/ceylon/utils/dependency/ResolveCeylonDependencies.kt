@@ -8,9 +8,9 @@ import java.io.File
 import com.redhat.ceylon.common.Backend
 import com.redhat.ceylon.common.config.DefaultToolOptions
 
-class ResolveCeylonDependencies(val project: Project, moduleName: String?) {
-
-    val module: String? = moduleName ?: DefaultToolOptions.getCompilerModules( Backend.Header ).joinToString { "," }
+class ResolveCeylonDependencies(val project: Project,val _moduleName: String) {
+    val moduleNameFromFile = DefaultToolOptions.getCompilerModules( Backend.Header ).joinToString( ".")
+    val module: String? = if(_moduleName!="") _moduleName else if (moduleNameFromFile!="*") moduleNameFromFile else null
     val log = Logging.getLogger( ResolveCeylonDependencies::class.java)
     val moduleFile = moduleFile()
 
@@ -63,7 +63,7 @@ class ResolveCeylonDependencies(val project: Project, moduleName: String?) {
            throw GradleException("The Ceylon module must be specified")
         }
 
-        val moduleNameParts = module!!.split(".")
+        val moduleNameParts = module.split(".")
         val locations = mutableListOf<String>()
         project.ceylonPlugin.sourceRoots.get().forEach {
             val moduleName = moduleNameParts

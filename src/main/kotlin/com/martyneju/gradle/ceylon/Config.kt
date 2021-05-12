@@ -1,7 +1,5 @@
 package com.martyneju.gradle.ceylon
 
-import com.martyneju.gradle.ceylon.utils.*
-import com.martyneju.gradle.ceylon.utils.ceylonDir
 import com.martyneju.gradle.ceylon.utils.isWindows
 import com.martyneju.gradle.ceylon.utils.lProperty
 import com.martyneju.gradle.ceylon.utils.property
@@ -27,14 +25,14 @@ open class Config @Inject constructor(@Suppress("UNUSED_PARAMETER") project: Pro
     val testRoots: ListProperty<String> = objects.lProperty<String>().convention(DefaultToolOptions.getCompilerSourceDirs().map { it.path })
     val output: Property<String> = objects.property<String>().convention(DefaultToolOptions.getCompilerOutputRepo())
 
-    val ceylonLocation: Property<String> = objects.property<String>().convention(project.ceylonDir.resolve("ceylon-1.3.3").resolve("bin").resolve("ceylon${ if(isWindows) ".bat" else ""}").path)
-    val javaLocation: Property<String> = objects.property<String>().convention(project.javaDir.resolve("jdk8u292-b10").path)
-    val overrides: Property<String> = objects.property<String>().convention(project.buildDir.resolve("overrides.xml").path)
-    val mavenSettings: Property<String> = objects.property<String>().convention(project.buildDir.resolve("maven-settings.xml").path)
-    val mavenRepo: Property<String> = objects.property<String>().convention(project.buildDir.resolve("maven-repository").path)
-    val fatJarDestination: Property<String> = objects.property<String>().convention(project.buildDir.resolve("fatJar").path)
-    val javaRuntimeDestination: Property<String> = objects.property<String>().convention(project.buildDir.resolve("java-runtime").path)
-    val testReportDestination: Property<String> = objects.property<String>().convention(project.buildDir.resolve("reports").path)
+    val ceylonLocation: Property<String> = objects.property<String>().convention(File(GRADLE_FILES_DIR).resolve(CEYLON_ENVS_DIR).resolve("ceylon-1.3.3").resolve("bin").resolve("ceylon${ if(isWindows) ".bat" else ""}").path)
+    val javaLocation: Property<String> = objects.property<String>().convention(File(GRADLE_FILES_DIR).resolve(CEYLON_ENVS_DIR).resolve("jdk8u292-b10").path)
+    val overrides: Property<String> = objects.property<String>().convention(File("build").resolve("overrides.xml").path)
+    val mavenSettings: Property<String> = objects.property<String>().convention(File("build").resolve("maven-settings.xml").path)
+    val mavenRepo: Property<String> = objects.property<String>().convention(File("build").resolve("maven-repository").path)
+    val fatJarDestination: Property<String> = objects.property<String>().convention(File("build").resolve("fatJar").path)
+    val javaRuntimeDestination: Property<String> = objects.property<String>().convention(File("build").resolve("java-runtime").path)
+    val testReportDestination: Property<String> = objects.property<String>().convention(File("build").resolve("reports").path)
 
     val flatClasspath: Property<Boolean> = objects.property<Boolean>().convention(config.getBoolOption( DefaultToolOptions.DEFAULTS_FLAT_CLASSPATH ) ?: true)
     val importJars: Property<Boolean> = objects.property<Boolean>().convention(false)

@@ -9,10 +9,10 @@ open class CeylonCommandOptions {
 
         fun getCommonOptions(project: Project, includeFlatClasspath: Boolean = true): List<CommandOption> {
             val options = mutableListOf<CommandOption>()
-            if (project.ceylonPlugin.overrides.get().exists()) options.add(
+            if (project.file(project.ceylonPlugin.overrides.get()).exists()) options.add(
                 CommandOption(
                     "--overrides",
-                    project.ceylonPlugin.overrides.get().path
+                    project.file(project.ceylonPlugin.overrides.get()).path
                 )
             )
             if (includeFlatClasspath && project.ceylonPlugin.flatClasspath.get()) options.add(CommandOption("--flat-classpath"))
@@ -21,7 +21,7 @@ open class CeylonCommandOptions {
         }
 
         fun getRepositoryOptions(project: Project) = listOf(
-            CommandOption("--rep", "aether${project.ceylonPlugin.mavenSettings.get().path}"),
+            CommandOption("--rep", "aether${project.file(project.ceylonPlugin.mavenSettings.get()).path}"),
             CommandOption("--rep", project.ceylonPlugin.output.get())
         )
 
