@@ -1,0 +1,12 @@
+[compiler]
+module=com.martyneju.gradle.ceylon.example.sample
+source=source
+source=test
+resource=resource
+
+[defaults]
+offline=false
+flatclasspath=true
+autoexportmavendependencies=true
+fullyexportmavendependencies=true
+
