@@ -38,10 +38,10 @@ open class GenerateOverridesFile: DefaultTask() {
     @Input
     var ceylonModule: String = if(project.hasProperty("ceylonModule")) project.property("ceylonModule").toString() else ""
 
-
+    private val dependencies by lazy { ResolveCeylonDependencies(project, ceylonModule)}
     @InputFiles
     fun inputFiles() =
-        project.allprojects.map { it.buildFile } + ResolveCeylonDependencies(project, ceylonModule).moduleFile
+        project.allprojects.map { it.buildFile } + dependencies.moduleFile
 
     private val overrides = project.file(project.ceylonPlugin.overrides.get())
 
@@ -58,7 +58,7 @@ open class GenerateOverridesFile: DefaultTask() {
 
         log.info("Generating Ceylon overrides.xml file at ${overrides.absolutePath}")
 
-        val dependencyTree = ResolveCeylonDependencies(project, ceylonModule).resolve()
+        val dependencyTree = dependencies.resolve()
         writeOverridesFile(dependencyTree)
     }
 

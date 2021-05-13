@@ -2,6 +2,7 @@ package com.martyneju.gradle.ceylon.utils
 
 import org.gradle.api.artifacts.ResolvedDependency
 import org.gradle.api.logging.Logging
+import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import javax.xml.stream.XMLOutputFactory
@@ -12,8 +13,8 @@ class MavenPomCreator {
     companion object {
         val log = Logging.getLogger( MavenPomCreator::class.java )
 
-        fun createPomFor(dependency: ResolvedDependency,dependencies: Collection<ResolvedDependency>, fileName: String) {
-            val writer = XMLOutputFactory.newInstance().createXMLStreamWriter(FileOutputStream(fileName), "UTF-8")
+        fun createPomFor(dependency: ResolvedDependency,dependencies: Collection<ResolvedDependency>, fileName: File) {
+            val writer = XMLOutputFactory.newInstance().createXMLStreamWriter(fileName.outputStream(), "UTF-8")
 
             try {
                 writer.document {

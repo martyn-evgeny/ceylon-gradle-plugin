@@ -8,8 +8,8 @@ import java.io.File
 import com.redhat.ceylon.common.Backend
 import com.redhat.ceylon.common.config.DefaultToolOptions
 
-class ResolveCeylonDependencies(val project: Project,val _moduleName: String) {
-    val moduleNameFromFile = DefaultToolOptions.getCompilerModules( Backend.Header ).joinToString( ".")
+class ResolveCeylonDependencies(val project: Project, _moduleName: String) {
+    val moduleNameFromFile = DefaultToolOptions.getCompilerModules( project.ceylonPlugin.config, Backend.Header ).joinToString( ".")
     val module: String? = if(_moduleName!="") _moduleName else if (moduleNameFromFile!="*") moduleNameFromFile else null
     val log = Logging.getLogger( ResolveCeylonDependencies::class.java)
     val moduleFile = moduleFile()
@@ -55,10 +55,10 @@ class ResolveCeylonDependencies(val project: Project,val _moduleName: String) {
         if( module == null) {
            log.error("""
             | The Ceylon module name has not been specified.
-            | To specify the name of your Ceylon module, using parameter "module"
+            | To specify the name of your Ceylon module, using parameter "ceylonModule"
             |  
             | If you prefer, you can set the default module in the Ceylon config file instead,
-            | and that will be used by Gradle.
+            | and that will be used by Gradle. Or you can add properties when exec task: -PceylonModule="com.example.name.ceylon.module" 
            """.trimMargin())
            throw GradleException("The Ceylon module must be specified")
         }

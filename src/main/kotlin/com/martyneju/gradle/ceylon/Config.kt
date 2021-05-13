@@ -17,13 +17,13 @@ open class Config @Inject constructor(@Suppress("UNUSED_PARAMETER") project: Pro
     /**
      * Set the default values from the Ceylon config file, if it is present.
      */
-    val config = CeylonConfig.get()
+    val config: CeylonConfig = CeylonConfig.createFromLocalDir(project.projectDir)
 
-    val sourceRoots: ListProperty<String> = objects.lProperty<String>().convention( DefaultToolOptions.getCompilerSourceDirs().map { it.path } )
-    val resourceRoots: ListProperty<String> = objects.lProperty<String>().convention( DefaultToolOptions.getCompilerResourceDirs().map { it.path })
-    val testResourceRoots: ListProperty<String> = objects.lProperty<String>().convention(DefaultToolOptions.getCompilerResourceDirs().map { it.path })
-    val testRoots: ListProperty<String> = objects.lProperty<String>().convention(DefaultToolOptions.getCompilerSourceDirs().map { it.path })
-    val output: Property<String> = objects.property<String>().convention(DefaultToolOptions.getCompilerOutputRepo())
+    val sourceRoots: ListProperty<String> = objects.lProperty<String>().convention( DefaultToolOptions.getCompilerSourceDirs(config).map { it.path } )
+    val resourceRoots: ListProperty<String> = objects.lProperty<String>().convention( DefaultToolOptions.getCompilerResourceDirs(config).map { it.path })
+    val testResourceRoots: ListProperty<String> = objects.lProperty<String>().convention(DefaultToolOptions.getCompilerResourceDirs(config).map { it.path })
+    val testRoots: ListProperty<String> = objects.lProperty<String>().convention(DefaultToolOptions.getCompilerSourceDirs(config).map { it.path })
+    val output: Property<String> = objects.property<String>().convention(DefaultToolOptions.getCompilerOutputRepo(config))
 
     val ceylonLocation: Property<String> = objects.property<String>().convention(File(GRADLE_FILES_DIR).resolve(CEYLON_ENVS_DIR).resolve("ceylon-1.3.3").resolve("bin").resolve("ceylon${ if(isWindows) ".bat" else ""}").path)
     val javaLocation: Property<String> = objects.property<String>().convention(File(GRADLE_FILES_DIR).resolve(CEYLON_ENVS_DIR).resolve("jdk8u292-b10").path)

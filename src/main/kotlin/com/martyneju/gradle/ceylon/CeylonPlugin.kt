@@ -2,6 +2,7 @@ package com.martyneju.gradle.ceylon
 
 import com.martyneju.gradle.ceylon.tasks.Setup
 import com.martyneju.gradle.ceylon.tasks.Clean
+import com.martyneju.gradle.ceylon.tasks.CreateDependenciesPoms
 import com.martyneju.gradle.ceylon.tasks.GenerateOverridesFile
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -18,6 +19,6 @@ open class CeylonPlugin: Plugin<Project> {
         val ceylonSetupTak = tasks.register("setupCeylon", Setup::class.java)
         tasks.register("cleanCeylon", Clean::class.java)
         tasks.register("generateOverridesFile", GenerateOverridesFile::class.java)
-
+        tasks.register("createDependenciesPoms", CreateDependenciesPoms::class.java)
     }
 }
