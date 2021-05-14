@@ -14,9 +14,17 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputFiles
 import org.gradle.api.tasks.TaskAction
+import java.io.ByteArrayOutputStream
 import java.io.IOException
+import java.io.StringReader
+import java.io.StringWriter
 import javax.xml.stream.XMLOutputFactory
 import javax.xml.stream.XMLStreamException
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.Transformer
+import javax.xml.transform.stream.StreamResult
+import javax.xml.transform.stream.StreamSource
 
 /**
  *  https://ceylon-lang.org/documentation/1.3/reference/repository/overrides/
@@ -67,9 +75,8 @@ open class GenerateOverridesFile: DefaultTask() {
     }
 
     private fun writeOverridesFile(dependencyTree: DependencyTree) {
-        val writer = XMLOutputFactory.newInstance().createXMLStreamWriter(overrides.outputStream(), "UTF-8")
-        try {
-            writer.document {
+        prettyPrinting(overrides) {
+            it.document {
                 element("overrides") {
                     attribute(
                         "xmlns",
@@ -102,13 +109,6 @@ open class GenerateOverridesFile: DefaultTask() {
                     }
                 }
             }
-            writer.flush()
-        } catch (e: XMLStreamException) {
-            MavenPomCreator.log.error(" error in create overrides.xml file ",e)
-        } catch (e: IOException) {
-            MavenPomCreator.log.error(" error in create overrides.xml file ",e)
-        } finally {
-            writer?.close()
         }
     }
 

@@ -9,7 +9,17 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.internal.os.OperatingSystem
 import java.io.File
+import java.io.IOException
+import java.io.StringReader
+import java.io.StringWriter
+import javax.xml.stream.XMLOutputFactory
+import javax.xml.stream.XMLStreamException
 import javax.xml.stream.XMLStreamWriter
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.Transformer
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.stream.StreamResult
+import javax.xml.transform.stream.StreamSource
 
 
 /**
@@ -93,6 +103,27 @@ internal val exec: String
     }
 
 /* =================== xml ==================== */
+
+fun prettyPrinting(fileName: File, init: (XMLStreamWriter) -> Unit) {
+    val out = StringWriter()
+    val writer = XMLOutputFactory.newInstance().createXMLStreamWriter(out)
+    try {
+        init(writer)
+        writer.flush()
+
+        val transformer: Transformer = TransformerFactory.newInstance().newTransformer()
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+        transformer.transform(StreamSource(StringReader(out.toString())), StreamResult(fileName));
+
+    } catch (e: XMLStreamException) {
+        MavenPomCreator.log.error(" error in create ${fileName.path} file ",e)
+    } catch (e: IOException) {
+        MavenPomCreator.log.error(" error in create ${fileName.path} file ",e)
+    } finally {
+        writer?.close()
+    }
+}
 
 fun XMLStreamWriter.document(init: XMLStreamWriter.() -> Unit): XMLStreamWriter {
     this.writeStartDocument("UTF-8", "1.0")

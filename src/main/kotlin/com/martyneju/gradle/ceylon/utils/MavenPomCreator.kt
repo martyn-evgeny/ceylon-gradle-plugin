@@ -14,37 +14,32 @@ class MavenPomCreator {
         val log = Logging.getLogger( MavenPomCreator::class.java )
 
         fun createPomFor(dependency: ResolvedDependency,dependencies: Collection<ResolvedDependency>, fileName: File) {
-            val writer = XMLOutputFactory.newInstance().createXMLStreamWriter(fileName.outputStream(), "UTF-8")
-
-            try {
-                writer.document {
+            prettyPrinting(fileName) {
+                it.document {
                     element("project") {
-                        attribute("xsi:schemaLocation","http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd")
-                        attribute("xmlns","http://maven.apache.org/POM/4.0.0")
-                        attribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance")
-                    }
-                    element("modelVersion","4.0.0")
-                    element("groupId",dependency.moduleGroup)
-                    element("artifactId",dependency.moduleName)
-                    element("version",dependency.moduleVersion)
+                        attribute(
+                            "xsi:schemaLocation",
+                            "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+                        )
+                        attribute("xmlns", "http://maven.apache.org/POM/4.0.0")
+                        attribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
 
-                    element("dependencies") {
-                        dependencies.forEach {
-                            element("dependency") {
-                                element("groupId",it.moduleGroup)
-                                element("artifactId",it.moduleName)
-                                element("version", it.moduleVersion)
+                        element("modelVersion", "4.0.0")
+                        element("groupId", dependency.moduleGroup)
+                        element("artifactId", dependency.moduleName)
+                        element("version", dependency.moduleVersion)
+
+                        element("dependencies") {
+                            dependencies.forEach {
+                                element("dependency") {
+                                    element("groupId", it.moduleGroup)
+                                    element("artifactId", it.moduleName)
+                                    element("version", it.moduleVersion)
+                                }
                             }
                         }
                     }
                 }
-                writer.flush()
-            } catch (e: XMLStreamException) {
-                log.error(" error in create maven pom file ",e)
-            } catch (e: IOException) {
-                log.error(" error in create maven pom file ",e)
-            } finally {
-                writer?.close()
             }
         }
     }
