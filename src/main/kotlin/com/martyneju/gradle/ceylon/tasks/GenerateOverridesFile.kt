@@ -18,6 +18,10 @@ import java.io.IOException
 import javax.xml.stream.XMLOutputFactory
 import javax.xml.stream.XMLStreamException
 
+/**
+ *  https://ceylon-lang.org/documentation/1.3/reference/repository/overrides/
+ *
+ */
 open class GenerateOverridesFile: DefaultTask() {
     init {
         group = PLUGIN_TASKS_GROUP_NAME
@@ -71,10 +75,29 @@ open class GenerateOverridesFile: DefaultTask() {
                         "xmlns",
                         "http://www.ceylon-lang.org/xsd/overrides"
                     )
-                    dependencyTree.moduleDeclaration.imports.forEach {
+                    dependencyTree.moduleDeclaration.imports.filter { it.namespace != "maven" }.forEach {
                         element("set") {
                             attribute("module", it.name?:"")
                             attribute("version", it.version?:"")
+                        }
+                    }
+                    dependencyTree.getModuleDeclaredDependencies().forEach {
+                        val transitiveDeps = DependencyTree.transitiveDependenciesOf(it)
+                        if(transitiveDeps.isNotEmpty()) {
+                            element("artifact") {
+                                attribute("groupId", it.moduleGroup)
+                                attribute("artifactId", it.moduleName)
+                                attribute("version", it.moduleVersion)
+                                if(dependencyTree.isShared(it)) attribute("shared ", "true")
+                                transitiveDeps.forEach {
+                                    element("add") {
+                                        attribute("groupId", it.moduleGroup)
+                                        attribute("artifactId", it.moduleName)
+                                        attribute("version", it.moduleVersion)
+                                        attribute("shared ", "true")
+                                    }
+                                }
+                            }
                         }
                     }
                 }
