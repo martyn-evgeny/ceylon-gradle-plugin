@@ -34,10 +34,10 @@ open class GenerateOverridesFile: DefaultTask() {
     init {
         group = PLUGIN_TASKS_GROUP_NAME
         description = """
-            | Generates the overrides.xml file based on the Gradle project dependencies.
-            | All Java legacy dependencies declared in the Ceylon module file are checked so
-            | that if they require transitive dependencies, they are added to the auto-generated
-            | overrides file.""".trimMargin()
+            |Generates the overrides.xml file based on the Gradle project dependencies.
+            |All Java legacy dependencies declared in the Ceylon module file are checked so
+            |that if they require transitive dependencies, they are added to the auto-generated
+            |overrides file.""".linear()
     }
 
     val log = Logging.getLogger(GenerateOverridesFile::class.java)

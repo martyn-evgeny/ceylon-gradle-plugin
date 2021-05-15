@@ -146,3 +146,8 @@ fun XMLStreamWriter.element(name: String, content: String) {
 }
 
 fun XMLStreamWriter.attribute(name: String, value: String) = writeAttribute(name, value)
+
+/* ======================= string ============== */
+
+fun String.linear(): String =
+    this.trimMargin().replace("\n", " ")

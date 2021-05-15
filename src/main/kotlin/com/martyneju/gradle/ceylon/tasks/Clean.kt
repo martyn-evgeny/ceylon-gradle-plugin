@@ -13,9 +13,11 @@ open class Clean: Delete() {
         description = "Removes the output of all tasks of the Ceylon plugin"
     }
 
-    fun <T: Task> addFilesFromTask(_class: Class<T>, acc: MutableCollection<Object>) {
-        project.files(project.tasks.withType(_class)).from.forEach {
-            acc.add(it as Object)
+    private fun addFilesFromTask(acc: MutableCollection<Object>, vararg _class: Class<*>) {
+        _class.forEach {
+            project.files(project.tasks.withType(it as Class<Task>)).from.forEach { file ->
+                acc.add(file as Object)
+            }
         }
     }
 
@@ -23,7 +25,11 @@ open class Clean: Delete() {
         val files = mutableListOf<Object>()
         files.add(project.buildDir!! as Object)
         files.add(MavenSettingsFileCreator.mavenSettingsFile(project) as Object)
-        addFilesFromTask(GenerateOverridesFile::class.java, files)
+        addFilesFromTask( files,
+            GenerateOverridesFile::class.java,
+            CreateDependenciesPoms::class.java,
+            CreateMavenRepo::class.java
+        )
 
         return files
     }

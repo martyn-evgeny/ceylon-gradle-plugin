@@ -4,7 +4,10 @@ import com.martyneju.gradle.ceylon.PLUGIN_TASKS_GROUP_NAME
 import com.martyneju.gradle.ceylon.utils.MavenPomCreator
 import com.martyneju.gradle.ceylon.utils.dependency.DependencyTree
 import com.martyneju.gradle.ceylon.utils.dependency.ResolveCeylonDependencies
+import com.martyneju.gradle.ceylon.utils.linear
 import org.gradle.api.DefaultTask
+import org.gradle.api.Project
+import org.gradle.api.artifacts.ResolvedDependency
 import org.gradle.api.logging.Logging
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
@@ -12,15 +15,22 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
 open class CreateDependenciesPoms: DefaultTask() {
+
+    companion object {
+        fun getRootDir(project: Project) = project.buildDir.resolve("dependency-poms")
+        fun pomTempLocation(dependency: ResolvedDependency, project: Project) =
+            getRootDir(project).resolve("${dependency.moduleName}-${dependency.moduleVersion}.pom")
+    }
+
     init {
         group = PLUGIN_TASKS_GROUP_NAME
         description = """
-            | Creates Maven pom files for all transitive dependencies.
-            | The transitive dependencies are resolved by Gradle, then for each dependency, a pom
-            | is created containing only its direct dependencies as reported by Gradle.
-            | This allows Ceylon to import jars without considering optional Maven dependencies,
-            | for example, as Gradle does not resolve optional dependencies by default.
-            """.trimMargin()
+            |Creates Maven pom files for all transitive dependencies.
+            |The transitive dependencies are resolved by Gradle, then for each dependency, a pom
+            |is created containing only its direct dependencies as reported by Gradle.
+            |This allows Ceylon to import jars without considering optional Maven dependencies,
+            |for example, as Gradle does not resolve optional dependencies by default.
+            """.linear()
     }
 
     val log = Logging.getLogger(GenerateOverridesFile::class.java)
@@ -40,10 +50,10 @@ open class CreateDependenciesPoms: DefaultTask() {
     fun inputFiles() =
         project.allprojects.map { it.buildFile } + dependencies.moduleFile
 
-    private val rootDir = project.buildDir.resolve("dependency-poms")
+    private val rootDir = getRootDir(project)
 
     @OutputDirectory
-    fun outputFiles() = listOf(rootDir)
+    fun outputDirectory() = listOf(rootDir)
 
     @TaskAction
     fun run() {
@@ -52,7 +62,7 @@ open class CreateDependenciesPoms: DefaultTask() {
             MavenPomCreator.createPomFor(
                 it,
                 DependencyTree.directDependenciesOf(it),
-                rootDir.resolve("${it.moduleName}-${it.moduleVersion}.pom")
+                pomTempLocation(it,project)
             )
         }
     }

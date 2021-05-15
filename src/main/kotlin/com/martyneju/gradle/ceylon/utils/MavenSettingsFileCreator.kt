@@ -17,7 +17,7 @@ class MavenSettingsFileCreator {
 
             // do not overwrite file if already there
             if(settingsFile.exists()) {
-                log.debug("Maven settings file already exists. Will not overwrite it.")
+                log.info("Maven settings file already exists. Will not overwrite it.")
                 return settingsFile
             }
 
