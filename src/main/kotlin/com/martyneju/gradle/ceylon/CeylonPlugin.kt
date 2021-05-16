@@ -19,5 +19,6 @@ open class CeylonPlugin: Plugin<Project> {
         tasks.register("createMavenRepo", CreateMavenRepo::class.java) {
             it.dependsOn(dependenciesPoms)
         }
+        tasks.register("createModuleDescriptors", CreateModuleDescriptors::class.java)
     }
 }

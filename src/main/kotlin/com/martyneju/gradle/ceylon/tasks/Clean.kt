@@ -28,7 +28,8 @@ open class Clean: Delete() {
         addFilesFromTask( files,
             GenerateOverridesFile::class.java,
             CreateDependenciesPoms::class.java,
-            CreateMavenRepo::class.java
+            CreateMavenRepo::class.java,
+            CreateModuleDescriptors::class.java
         )
 
         return files
