@@ -25,6 +25,7 @@ dependencies {
 }
 
 var config = project.extensions.getByType(Config::class.java)
+config.importJars.set(true)
 
 tasks.register<GenerateOverridesFile>("createOverride") {
     ceylonModule = "com.martyneju.gradle.ceylon.example.sample"

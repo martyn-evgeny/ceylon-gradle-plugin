@@ -29,7 +29,8 @@ open class Clean: Delete() {
             GenerateOverridesFile::class.java,
             CreateDependenciesPoms::class.java,
             CreateMavenRepo::class.java,
-            CreateModuleDescriptors::class.java
+            CreateModuleDescriptors::class.java,
+            ImportJars::class.java
         )
 
         return files

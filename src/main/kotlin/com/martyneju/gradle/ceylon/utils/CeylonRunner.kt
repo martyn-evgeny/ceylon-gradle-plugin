@@ -16,16 +16,18 @@ open class CeylonRunner {
             module: String,
             project: Project,
             options: List<CommandOption>,
+            additionalArgs: List<String>,
             standardInput: InputStream,
             standardOutput: OutputStream
         ): ExecResult {
 
             log.info("Executing ceylon ${ceylonDirective} in poject ${project.name}")
-            val ceylonArgs = project.property("ceylon-arg")?.toString() ?: ""
+            val ceylonArgs = if( project.hasProperty("ceylon-arg") )
+                                 project.property("ceylon-arg")!!.toString()
+                             else ""
 
             val ceylon = CeylonToolLocator.findCeylon(project)
             log.debug("Running Ceylon executable: ${ceylon}")
-
 
             val env = mapOf<String,String> (
                 "JAVA_HOME" to project.file(project.ceylonPlugin.javaLocation.get()).absolutePath,
@@ -35,10 +37,11 @@ open class CeylonRunner {
             val command = listOf(ceylon, ceylonDirective) +
                 options.map { it.toString() } +
                 ceylonArgs +
-                module
+                module +
+                additionalArgs
 
             env.forEach { log.info(it.key+"="+it.value) }
-            log.info( "Running command: ${command.joinToString { " " }}" )
+            log.info( "Running command: ${command.joinToString(" ")}" )
 
             return project.exec {
                 it.commandLine(command)

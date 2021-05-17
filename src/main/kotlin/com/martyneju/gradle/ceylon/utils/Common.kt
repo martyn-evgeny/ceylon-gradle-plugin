@@ -49,7 +49,7 @@ internal val Project.ceylonPlugin: Config
 /* =================== Files ============== */
 
 internal val Project.ceylonDir: File
-    get() = this.rootDir.resolve(GRADLE_FILES_DIR).resolve(CEYLON_ENVS_DIR)
+    get() = project.file(GRADLE_FILES_DIR).resolve(CEYLON_ENVS_DIR)
 
 
 /* =================== OS ============== */

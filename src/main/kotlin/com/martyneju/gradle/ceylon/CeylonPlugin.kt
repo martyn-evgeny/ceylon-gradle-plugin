@@ -12,13 +12,16 @@ open class CeylonPlugin: Plugin<Project> {
 
         extensions.create(CEYLON_PLUGIN_EXTENSION_NAME, Config::class.java,project)
 
-        val ceylonSetupTak = tasks.register("setupCeylon", Setup::class.java)
+        tasks.register("setupCeylon", Setup::class.java)
         tasks.register("cleanCeylon", Clean::class.java)
         tasks.register("generateOverridesFile", GenerateOverridesFile::class.java)
         val dependenciesPoms = tasks.register("createDependenciesPoms", CreateDependenciesPoms::class.java)
-        tasks.register("createMavenRepo", CreateMavenRepo::class.java) {
+        val mavenRepo = tasks.register("createMavenRepo", CreateMavenRepo::class.java) {
             it.dependsOn(dependenciesPoms)
         }
-        tasks.register("createModuleDescriptors", CreateModuleDescriptors::class.java)
+        val moduleDescriptors = tasks.register("createModuleDescriptors", CreateModuleDescriptors::class.java)
+        tasks.register("importJars", ImportJars::class.java) {
+            it.dependsOn(mavenRepo, moduleDescriptors)
+        }
     }
 }
