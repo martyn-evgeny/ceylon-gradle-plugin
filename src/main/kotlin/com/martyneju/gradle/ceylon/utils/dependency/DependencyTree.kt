@@ -12,8 +12,8 @@ class DependencyTree(val project: Project,val moduleDeclaration: CeylonModule) {
     companion object {
 
         private fun accumulateDependencies(dependency: ResolvedDependency, acc: MutableMap<String, ResolvedDependency> ) {
-            acc[dependency.name] = dependency
             dependency.children.forEach { accumulateDependencies(it, acc) }
+            acc[dependency.name] = dependency
         }
 
         fun transitiveDependenciesOf(dependency: ResolvedDependency): Collection<ResolvedDependency> {

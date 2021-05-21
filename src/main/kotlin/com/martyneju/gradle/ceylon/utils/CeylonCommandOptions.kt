@@ -53,6 +53,7 @@ open class CeylonCommandOptions {
             if(project.ceylonPlugin.forceImports.get()) options.add(CommandOption("--force"))
             options.add(CommandOption("--descriptor", moduleDescriptor.absolutePath))
             options.add(CommandOption("--out", project.ceylonPlugin.output.get()))
+            options.add(CommandOption(( "--show-suggestions")))
             options.addAll(getRepositoryOptions(project))
             return options
         }
