@@ -20,6 +20,7 @@ import org.gradle.process.internal.streams.SafeStreams
 import java.io.InputStream
 import java.io.OutputStream
 
+@Deprecated("need change")
 open class ImportJars: DefaultTask() {
     init {
         group = PLUGIN_TASKS_GROUP_NAME
@@ -47,7 +48,7 @@ open class ImportJars: DefaultTask() {
 
     private val repoDir = project.file(project.ceylonPlugin.output.get())
     @OutputDirectory
-    fun outputDirectory() = listOf(repoDir)
+    fun outputDirectory() = repoDir
 
     @Input
     var standardInput: InputStream = SafeStreams.emptyInput()
@@ -62,12 +63,9 @@ open class ImportJars: DefaultTask() {
             throw GradleException( "Output repository does not exist and cannot be created ${repoDir.absolutePath}." )
         }
         val depTree = dependencies.resolve()
-        if(project.ceylonPlugin.importJars.get()) {
-            log.info("Importing Jar dependencies in ${repoDir}")
-            depTree.jarDependencies.forEach {
-                importDependecy(it)
-            }
-        }
+//        if(project.ceylonPlugin.importJars.get()) {
+//            log.info("Importing Jar dependencies in ${repoDir}")
+//        }
 
         log.info("Importing Ceylon dependencies")
         depTree.ceylonDependencies.forEach {

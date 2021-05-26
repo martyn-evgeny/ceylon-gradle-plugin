@@ -30,6 +30,7 @@ import javax.xml.transform.stream.StreamSource
  *  https://ceylon-lang.org/documentation/1.3/reference/repository/overrides/
  *
  */
+@Deprecated("need change")
 open class GenerateOverridesFile: DefaultTask() {
     init {
         group = PLUGIN_TASKS_GROUP_NAME

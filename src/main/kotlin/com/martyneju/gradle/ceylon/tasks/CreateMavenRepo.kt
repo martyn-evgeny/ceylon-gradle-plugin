@@ -10,6 +10,7 @@ import org.gradle.api.logging.Logging
 import org.gradle.api.tasks.*
 import java.io.File
 
+@Deprecated("need change")
 open class CreateMavenRepo: DefaultTask() {
     init {
         group = PLUGIN_TASKS_GROUP_NAME
@@ -41,7 +42,7 @@ open class CreateMavenRepo: DefaultTask() {
     private val rootDir = project.buildDir.resolve("maven-repository")
 
     @OutputDirectory
-    fun outputDirectory() = listOf(rootDir)
+    fun outputDirectory() = rootDir
 
     @OutputFiles
     fun outputFiles() = listOf(MavenSettingsFileCreator.mavenSettingsFile(project))

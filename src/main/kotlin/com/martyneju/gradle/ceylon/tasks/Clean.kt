@@ -30,7 +30,8 @@ open class Clean: Delete() {
             CreateDependenciesPoms::class.java,
             CreateMavenRepo::class.java,
             CreateModuleDescriptors::class.java,
-            ImportJars::class.java
+            ImportJars::class.java,
+            CompileCeylon::class.java
         )
 
         return files

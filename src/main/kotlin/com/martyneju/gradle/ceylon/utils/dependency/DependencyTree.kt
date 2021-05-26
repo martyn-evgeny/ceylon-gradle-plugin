@@ -12,6 +12,12 @@ class DependencyTree(val project: Project,val moduleDeclaration: CeylonModule) {
     companion object {
 
         private fun accumulateDependencies(dependency: ResolvedDependency, acc: MutableMap<String, ResolvedDependency> ) {
+            println("+++++++++++++++")
+            println(dependency)
+            dependency.children.forEach {
+                println(" *  " + it)
+            }
+            println("+++++++++++++++")
             dependency.children.forEach { accumulateDependencies(it, acc) }
             acc[dependency.name] = dependency
         }

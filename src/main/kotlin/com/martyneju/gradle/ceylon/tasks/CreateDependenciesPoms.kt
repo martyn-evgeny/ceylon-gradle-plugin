@@ -14,6 +14,7 @@ import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
+@Deprecated("need change")
 open class CreateDependenciesPoms: DefaultTask() {
 
     companion object {
@@ -53,7 +54,7 @@ open class CreateDependenciesPoms: DefaultTask() {
     private val rootDir = getRootDir(project)
 
     @OutputDirectory
-    fun outputDirectory() = listOf(rootDir)
+    fun outputDirectory() = rootDir
 
     @TaskAction
     fun run() {

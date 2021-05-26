@@ -1,5 +1,4 @@
 [compiler]
-module=com.martyneju.gradle.ceylon.example.sample
 source=source
 source=test
 resource=resource
@@ -10,3 +9,19 @@ flatclasspath=true
 autoexportmavendependencies=true
 fullyexportmavendependencies=true
 
+# define local ceylon repo
+[repository "LOCAL_CACHE"]
+url=dep/repo
+
+# define local maven repository
+[repository "LOCAL_MAVEN"]
+url=maven:dep/m2/settings.xml
+
+[repositories]
+remote=http://insecure.repo1.maven.org/maven2
+# redefine ceylon default cache with local one.
+# need for gathering maven dependencies -- for later offline usage
+cache=+LOCAL_CACHE
+# redefine maven default maven-repository with local one.
+# need for gathering maven dependencies -- for later offline usage
+remote=+LOCAL_MAVEN

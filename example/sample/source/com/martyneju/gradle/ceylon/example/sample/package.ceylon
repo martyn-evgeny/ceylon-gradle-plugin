@@ -1,0 +1,1 @@
+shared package com.martyneju.gradle.ceylon.example.sample;

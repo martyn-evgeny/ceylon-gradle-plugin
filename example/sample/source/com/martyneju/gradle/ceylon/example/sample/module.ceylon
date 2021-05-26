@@ -1,8 +1,7 @@
 native ("jvm")
 module com.martyneju.gradle.ceylon.example.sample "0.0.1" {
-    shared import ceylon.collection "1.3.3";
-    shared import ceylon.time "1.3.3";
-    shared import ceylon.json "1.3.3";
-    shared import maven:org.eclipse.paho:"org.eclipse.paho.client.mqttv3" "1.2.3";
-    shared import maven:org.apache.poi:"poi" "5.0.0";
+	import java.base "8";
+	import ceylon.interop.java "1.3.3";
+	import maven:org.apache.logging.log4j:"log4j-core" "2.4.1";
+
 }

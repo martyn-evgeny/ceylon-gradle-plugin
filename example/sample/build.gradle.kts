@@ -1,8 +1,10 @@
 import com.martyneju.gradle.ceylon.Config
-import com.martyneju.gradle.ceylon.tasks.GenerateOverridesFile
+import com.lazan.dependency.export.MavenDependencyExport
 
 plugins {
     java
+    id("maven-publish")
+    id("com.lazan.dependency-export") version "0.5"
 }
 
 group = "com.martyneju.gradle.ceylon.example.sample"
@@ -20,13 +22,16 @@ val ceylonRuntime = project.configurations.findByName("ceylonRuntime")!!
 dependencies {
     //implementation("org.ceylon-lang:com.redhat.ceylon.common:1.3.3")
     //testCompile("junit", "junit", "4.12")
-    ceylonRuntime("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.3")
-    ceylonRuntime("org.apache.poi:poi:5.0.0")
+    implementation("org.apache.logging.log4j:log4j-core:2.4.1")
 }
 
+configurations.implementation.isCanBeResolved = true
 var config = project.extensions.getByType(Config::class.java)
-config.importJars.set(true)
 
-tasks.register<GenerateOverridesFile>("createOverride") {
-    ceylonModule = "com.martyneju.gradle.ceylon.example.sample"
+
+tasks.register<MavenDependencyExport>("dep") {
+    configuration("implementation")
+    exportSources = true
+    exportJavadoc = true
+    exportDir = project.file("dep").resolve("m2").resolve("repository")
 }

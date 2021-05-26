@@ -1,0 +1,18 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.1.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0
+                 http://maven.apache.org/xsd/settings-1.1.0.xsd">
+
+    <localRepository>dep/m2/repository</localRepository>
+    <!-- <offline>true</offline> -->
+
+    <mirrors>
+    <mirror>
+        <id>centralhttps</id>
+        <mirrorOf>central</mirrorOf>
+        <name>Maven central https</name>
+        <url>http://insecure.repo1.maven.org/maven2/</url>
+    </mirror>
+    </mirrors>
+</settings>
+

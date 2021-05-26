@@ -14,14 +14,14 @@ open class CeylonPlugin: Plugin<Project> {
 
         tasks.register("setupCeylon", Setup::class.java)
         tasks.register("cleanCeylon", Clean::class.java)
-        tasks.register("generateOverridesFile", GenerateOverridesFile::class.java)
-        val dependenciesPoms = tasks.register("createDependenciesPoms", CreateDependenciesPoms::class.java)
-        val mavenRepo = tasks.register("createMavenRepo", CreateMavenRepo::class.java) {
-            it.dependsOn(dependenciesPoms)
-        }
-        val moduleDescriptors = tasks.register("createModuleDescriptors", CreateModuleDescriptors::class.java)
-        tasks.register("importJars", ImportJars::class.java) {
-            it.dependsOn(mavenRepo, moduleDescriptors)
-        }
+        //tasks.register("generateOverridesFile", GenerateOverridesFile::class.java)
+        //val dependenciesPoms = tasks.register("createDependenciesPoms", CreateDependenciesPoms::class.java)
+        //val mavenRepo = tasks.register("createMavenRepo", CreateMavenRepo::class.java) {
+        //    it.dependsOn(dependenciesPoms)
+        //}
+        //val moduleDescriptors = tasks.register("createModuleDescriptors", CreateModuleDescriptors::class.java)
+        //tasks.register("importJars", ImportJars::class.java)
+        tasks.register("compileCeylon", CompileCeylon::class.java)
+        //tasks.register("offlineRep", OfflineMavenRepository::class.java)
     }
 }
